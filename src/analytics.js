@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const tmp = require('tmp-promise');
+const isWindows = require('is-windows');
+const escape = require('js-string-escape');
 const rollup = require('rollup');
 const alias = require('@rollup/plugin-alias');
 const commonjs = require('@rollup/plugin-commonjs');
@@ -31,7 +33,13 @@ async function start() {
   const files = await readdir(cwd);
   const requireCode = files
     .filter((file) => (file.match(FILE_ANALYTICS)))
-    .map((file) => (`require('${path.resolve(cwd, file)}')`))
+    .map((file) => {
+      const resolved = path.resolve(cwd, file);
+      const dir = isWindows()
+        ? escape(escape(resolved))
+        : resolved;
+      return `require('${dir}')`;
+    })
     .join(',');
 
   const data = await readFile(path.resolve(__dirname, 'ServiceAnalytics.js'), {
