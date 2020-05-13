@@ -12,10 +12,10 @@ const alias = require('@rollup/plugin-alias');
 const commonjs = require('@rollup/plugin-commonjs');
 const { babel } = require('@rollup/plugin-babel');
 const { terser } = require('rollup-plugin-terser');
+const readdir = require('./readdir');
 const pkg = require('../package.json');
 
 const { log } = console;
-const readdir = util.promisify(fs.readdir);
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
@@ -31,6 +31,7 @@ const cwd = process.cwd();
 
 async function start() {
   const files = await readdir(cwd);
+
   const requireCode = files
     .filter((file) => (file.match(FILE_ANALYTICS)))
     .map((file) => {

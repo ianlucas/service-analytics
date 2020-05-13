@@ -20,6 +20,7 @@
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^11.1.0",
     "commander": "^5.1.0",
+    "glob": "^7.1.6",
     "is-windows": "^1.0.2",
     "js-string-escape": "^1.0.1",
     "rollup": "^2.8.2",

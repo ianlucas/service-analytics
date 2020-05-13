@@ -1,6 +1,7 @@
 import handleXml from 'src/handleXml';
 import handleJson from 'src/handleJson';
 import handleAnalysis from 'src/handleAnalysis';
+import handleAll from 'src/handleAll';
 
 class ServiceAnalysis {
   constructor() {
@@ -22,6 +23,7 @@ class ServiceAnalysis {
 
     let handle;
     const analysis = handleAnalysis();
+    const all = handleAll(this.services, service.type);
 
     if (service.type === 'application/json') {
       handle = handleJson;
@@ -30,10 +32,12 @@ class ServiceAnalysis {
     }
 
     if (service.request) {
+      all.request(handle(requestText), analysis);
       service.request(handle(requestText), analysis);
     }
 
     if (service.response) {
+      all.response(handle(responseText), analysis);
       service.response(handle(responseText), analysis);
     }
 
